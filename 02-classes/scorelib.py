@@ -7,17 +7,20 @@ class Print:
         self.print_id = print_id
         self.partiture = partiture
 
+    def composition(self):
+        return self.edition.composition
+
     def format(self):
-        print('\nPrint Number: ' + self.print_id)
+        print('\nPrint Number: ' + str(self.print_id))
         if self.edition.composition.authors:
             print('Composer: ' + Person.get_author_string(self.edition.composition.authors))
         print('Title: ' + self.edition.composition.name)
-        if self.edition.composition.genre:
+        if self.composition().genre:
             print('Genre: ' + self.edition.composition.genre)
         if self.edition.composition.key:
             print('Key: ' + self.edition.composition.key)
         if self.edition.composition.year:
-            print('Composition Year: ' + self.edition.composition.year)
+            print('Composition Year: ' + str(self.edition.composition.year))
         if self.edition.name:
             print('Edition: ' + self.edition.name)
         if self.edition.authors:
@@ -72,9 +75,9 @@ class Person:
     def __str__(self):
         result = self.name
         if self.born:
-            result += ' (' + self.born + '--'
+            result += ' (' + str(self.born) + '--'
             if self.died:
-                result += self.died
+                result += str(self.died)
             result += ')'
         return result
 
@@ -91,9 +94,9 @@ class Person:
                         years = re.findall('\d\d\d\d', name_and_years[1] )
                         person = Person(name)
                         if years:
-                            person.born = years[0]
+                            person.born = int(years[0])
                         if len(years) > 1:
-                            person.died = years[1]
+                            person.died = int(years[1])
                     else:
                         person = Person(personal_data_of_person)
                     persons.append(person)

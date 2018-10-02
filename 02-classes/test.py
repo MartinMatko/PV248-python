@@ -17,7 +17,7 @@ def load(file_name):
 
 def create_print_from_dictionary(record):
     print = Print()
-    print.print_id = record.get('Print Number')
+    print.print_id = int(record.get('Print Number'))
     partiture = record.get('Partiture')
     if 'es' in partiture:
         print.partiture = True
@@ -34,7 +34,8 @@ def create_print_from_dictionary(record):
     composition.incipit = record.get('Incipit')
     composition.key = record.get('Key')
     composition.genre = record.get('Genre')
-    composition.year = record.get('Year')
+    if record.get('Year'):
+        composition.year = int(record.get('Year'))
     composers = record.get('Composer')
     composition.authors = Person.get_author_list(composers)
 
