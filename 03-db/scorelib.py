@@ -26,7 +26,7 @@ class Print:
         if self.edition.authors:
             print('Editor: ' + Person.get_author_string(self.edition.authors))
         for idx, voice in enumerate(self.edition.composition.voices):
-            print('Voice ' + str(idx + 1) + ': ' + str(voice)) #voices start from one
+            print('Voice ' + str(idx + 1) + ': ' + str(voice))  # voices start from one
         if self.partiture:
             print('Partiture: ' + 'yes')
         else:
@@ -46,10 +46,11 @@ class Composition:
 
 
 class Edition:
-    def __init__(self, composition=None, authors=[], name=None):
+    def __init__(self, composition=None, authors=[], name=None, year=None):
         self.composition = composition
         self.authors = authors
         self.name = name
+        self.year = year
 
 
 class Voice:
@@ -93,7 +94,7 @@ class Person:
                     if ' (' in personal_data_of_person:
                         name_and_years = personal_data_of_person.split(' (')
                         name = name_and_years[0].strip()
-                        years = re.findall('\d\d\d\d', name_and_years[1] )
+                        years = re.findall('\d\d\d\d', name_and_years[1])
                         person = Person(name)
                         if years:
                             person.born = int(years[0])
@@ -107,6 +108,7 @@ class Person:
     @staticmethod
     def get_author_string(list):
         return '%s' % '; '.join(map(str, list))
+
 
 def load(file_name):
     prints = []
@@ -133,6 +135,8 @@ def create_print_from_dictionary(record):
 
     edition = Edition()
     edition.name = record.get('Edition')
+    if record.get('Publication Year') and record.get('Publication Year').isdigit():
+        edition.year = int(record.get('Publication Year'))
     editors = record.get('Editor')
     edition.authors = Person.get_author_list(editors)
 
@@ -141,8 +145,8 @@ def create_print_from_dictionary(record):
     composition.incipit = record.get('Incipit')
     composition.key = record.get('Key')
     composition.genre = record.get('Genre')
-    if record.get('Year'):
-        composition.year = int(record.get('Year'))
+    if record.get('Composition Year') and record.get('Composition Year').isdigit():
+        composition.year = int(record.get('Composition Year'))
     composers = record.get('Composer')
     composition.authors = Person.get_author_list(composers)
 
@@ -164,4 +168,3 @@ def create_print_from_dictionary(record):
     edition.composition = composition
     print.edition = edition
     return print
-

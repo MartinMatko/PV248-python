@@ -81,8 +81,8 @@ for print_entity in prints:
         c.execute("INSERT INTO score_author ( score, composer ) values (?, ?)",
                   (score_id, author_id))
 
-    c.execute("INSERT INTO edition ( score, name) values (?, ?)",
-              (score_id, edition.name))
+    c.execute("INSERT INTO edition ( score, name, year) values (?, ?, ?)",
+              (score_id, edition.name, edition.year))
     edition_id = c.lastrowid
 
     # edition_author
@@ -94,10 +94,10 @@ for print_entity in prints:
 
     # print
     partiture = 'N'
-    if print_entity.partiture == 'yes':
+    if print_entity.partiture:
         partiture = 'Y'
     c.execute("INSERT INTO print ( id, partiture, edition ) values (?, ?, ?)",
-              (print_entity.print_id, print_entity.partiture, edition_id))
+              (print_entity.print_id, partiture, edition_id))
 
 conn.commit()
 conn.close()
