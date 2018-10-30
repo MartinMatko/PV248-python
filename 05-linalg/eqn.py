@@ -1,4 +1,5 @@
 import re
+import sys
 
 import numpy as np
 
@@ -8,7 +9,7 @@ coefficients = []
 variables = {}
 equations = []
 variable_index = 0
-
+file_name = sys.argv[1]#'input.txt'
 
 def build_coefficient_matrix():
     A_list = []
@@ -34,7 +35,7 @@ def build_coefficient_matrix():
     return A_list
 
 
-for line in open('input.txt', 'r', encoding="utf8"):
+for line in open(file_name, 'r', encoding="utf8"):
     equation = line.split('=')
     left_side = equation[0].strip()
     equations.append(left_side)
